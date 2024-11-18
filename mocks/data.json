@@ -1,0 +1,82 @@
+[
+  {
+    "classroom": "Central & Kino",
+    "class": "Filmton/ Sounddesign",
+    "time": "14:00 - 17:00",
+    "instructor": "Stefan Nobir",
+    "className": "AD0923eng & AD0923mpr",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_audio.png",
+    "classType": "onCampus",
+    "zoomLink": ""
+  },
+  {
+    "classroom": "Project Room Green",
+    "class": "Rohschnitt Dokumentarfilm",
+    "time": "14:00 - 17:00",
+    "instructor": "Franziska Schlienger",
+    "className": "FD0923",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_film.png",
+    "classType": "online",
+    "zoomLink": "https://sae.zoom.us/j/99634860238?pwd=M1drZ1UzemdxV2JqNENzbm5PcU1hdz09"
+  },
+  {
+    "classroom": "Üetliberg",
+    "class": "Principles of Lighting UE",
+    "time": "14:00 - 17:00",
+    "instructor": "Thomas Ott",
+    "className": "GD0923b",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_game.png",
+    "classType": "onCampus",
+    "zoomLink": "https://sae.zoom.us/j/92502226632?pwd=VDgwcXVLZ2ZvMGc3VmpTbmdqTng1UT09"
+  },
+  {
+    "classroom": "Züriberg",
+    "class": "Löten",
+    "time": "14:00 - 17:00",
+    "instructor": "Martin Obi",
+    "className": "AD0924eng",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_audio.png",
+    "classType": "onCampus",
+    "zoomLink": ""
+  },
+  {
+    "classroom": "Albis",
+    "class": "Javascript",
+    "time": "17:30 - 20:30",
+    "instructor": "Stefan Guler",
+    "className": "WD0324",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_web.png",
+    "classType": "hybrid",
+    "zoomLink": "https://sae.zoom.us/j/96194889062?pwd=QnVhK2k2SS9XUVc1RnF0aFoyNXB3UT09"
+  },
+  {
+    "classroom": "Bellevue",
+    "class": "Frontend Frameworks",
+    "time": "17:30 - 20:30",
+    "instructor": "Hadrian Chio",
+    "className": "WD323",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_web.png",
+    "classType": "hybrid",
+    "zoomLink": "https://sae.zoom.us/j/92284858572?pwd=Rm1LakJ5R2xnMHNhanhqbGw3ZnZYdz09"
+  },
+  {
+    "classroom": "Hönggerberg",
+    "class": "Level Design",
+    "time": "17:30 - 20:30",
+    "instructor": "Severin Walker",
+    "className": "PD0923",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_game.png",
+    "classType": "onCampus",
+    "zoomLink": ""
+  },
+  {
+    "classroom": "Project Room Red",
+    "class": "Unity Shader",
+    "time": "17:30 - 20:30",
+    "instructor": "Ismael Wittwer",
+    "className": "PD323",
+    "imgSrc": "https://infoscreen.sae.ch/img/icon_game.png",
+    "classType": "online",
+    "zoomLink": "https://sae.zoom.us/j/99727799751?pwd=VW1sdkNzTkR6elQ1Qnc2ZnVNaFBPQT09"
+  }
+]
