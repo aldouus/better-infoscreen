@@ -5,7 +5,6 @@ export const AudioIcon = ({ className }: { className?: string }) => {
         className={className}
         viewBox="0 0 68.3 91.5"
         xmlns="http://www.w3.org/2000/svg"
-        title="Audio Icon"
       >
         <g id="Group_464" transform="translate(0 0)">
           <g fill="none" fillRule="evenodd">
