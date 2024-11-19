@@ -53,7 +53,7 @@ export const ZoomClassroomSheet = () => {
               <Tooltip key={title}>
                 <TooltipTrigger asChild>
                   <Link
-                    href={link}
+                    href={String(link)}
                     target="_blank"
                     className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
                   >
