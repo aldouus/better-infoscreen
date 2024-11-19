@@ -36,6 +36,8 @@ export const ZoomClassroomSheet = () => {
     return <p>Failed to load Zoom Classrooms.</p>;
   }
 
+  const validZoomLinks = Object.entries(zoomLinks).filter(([link]) => link);
+
   return (
     <TooltipProvider delayDuration={0}>
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
@@ -56,15 +58,15 @@ export const ZoomClassroomSheet = () => {
           </SheetHeader>
           <Separator className="my-3 bg-neutral-800" />
           <div className="grid grid-cols-2 gap-4">
-            {Object.entries(zoomLinks).map(([title, link]) => (
+            {validZoomLinks.map(([title, link]) => (
               <Tooltip key={title}>
                 <TooltipTrigger asChild>
                   <Link
-                    href={String(link)}
+                    href={link}
                     target="_blank"
                     className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
                   >
-                    <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600 ">
+                    <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600">
                       {title}
                     </Card>
                   </Link>

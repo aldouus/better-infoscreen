@@ -2,15 +2,17 @@ import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 import type { Lecture } from "@/types/lecture";
 
-let cachedData: Lecture[] | null = null;
+type CachedData = {
+  lectures: Lecture[];
+  zoomLinks: Record<string, string>;
+};
+
+let cachedData: CachedData | null = null;
 let lastUpdated = 0;
 const CACHE_DURATION = 1000 * 60 * 5;
 const isDevelopment = false;
 
-async function fetchAndProcessLectures(): Promise<{
-  lectures: Lecture[];
-  zoomLinks: Record<string, string>;
-}> {
+async function fetchAndProcessLectures(): Promise<CachedData> {
   const response = await fetch("https://infoscreen.sae.ch/");
   const html = await response.text();
 
@@ -26,7 +28,7 @@ async function fetchAndProcessLectures(): Promise<{
   for (const elem of navigationLinks) {
     const classroomName = elem.textContent?.trim() || "";
     const zoomLink = elem.getAttribute("href");
-    if (classroomName && zoomLink) {
+    if (classroomName && zoomLink && zoomLink.includes("zoom.us")) {
       zoomLinks[classroomName] = zoomLink;
     }
   }
@@ -83,6 +85,10 @@ async function fetchAndProcessLectures(): Promise<{
     });
   }
 
+  if (Object.keys(zoomLinks).length === 0) {
+    throw new Error("No zoom links found in the response");
+  }
+
   return { lectures, zoomLinks };
 }
 
@@ -90,57 +96,63 @@ export async function GET() {
   const now = Date.now();
 
   if (isDevelopment) {
-    const mockResponse = await fetch("http://localhost:3000/mocks/data.json");
-    const mockData: Lecture[] = await mockResponse.json();
+    const mockLinks = {
+      "Albis": "https://sae.zoom.us/j/96194889062",
+      "Bellevue": "https://sae.zoom.us/j/92284858572",
+      // ... other mock links ...
+    };
     return NextResponse.json(
-      { lectures: mockData, zoomLinks: {} },
+      { lectures: [], zoomLinks: mockLinks },
       {
         headers: {
           "Content-Type": "application/json",
-          "Cache-Control": "public, max-age=0, must-revalidate",
+          "Cache-Control": "no-store",
         },
       },
     );
   }
 
-  if (cachedData && now - lastUpdated < CACHE_DURATION) {
-    return new NextResponse(
-      JSON.stringify({ lectures: cachedData, zoomLinks: {} }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
-        },
-      },
-    );
-  }
-
-  try {
-    const { lectures, zoomLinks } = await fetchAndProcessLectures();
-    cachedData = lectures;
-    lastUpdated = now;
-
-    return new NextResponse(JSON.stringify({ lectures, zoomLinks }), {
+  if (
+    cachedData &&
+    now - lastUpdated < CACHE_DURATION &&
+    Object.keys(cachedData.zoomLinks).length > 0
+  ) {
+    return NextResponse.json(cachedData, {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
       },
     });
-  } catch {
-    if (cachedData) {
-      return new NextResponse(
-        JSON.stringify({ lectures: cachedData, zoomLinks: {} }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
-          },
-        },
-      );
+  }
+
+  try {
+    const data = await fetchAndProcessLectures();
+
+    if (Object.keys(data.zoomLinks).length > 0) {
+      cachedData = data;
+      lastUpdated = now;
     }
 
-    return new NextResponse(
-      JSON.stringify({ message: "Failed to fetch or process data." }),
+    return NextResponse.json(data, {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+
+    if (cachedData && Object.keys(cachedData.zoomLinks).length > 0) {
+      return NextResponse.json(cachedData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        },
+      });
+    }
+
+    return NextResponse.json(
+      { message: "Failed to fetch or process data." },
       { status: 500 },
     );
   }
