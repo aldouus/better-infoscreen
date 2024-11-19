@@ -7,7 +7,10 @@ let lastUpdated = 0;
 const CACHE_DURATION = 1000 * 60 * 5;
 const isDevelopment = false;
 
-async function fetchAndProcessLectures(): Promise<Lecture[]> {
+async function fetchAndProcessLectures(): Promise<{
+  lectures: Lecture[];
+  zoomLinks: Record<string, string>;
+}> {
   const response = await fetch("https://infoscreen.sae.ch/");
   const html = await response.text();
 
@@ -80,7 +83,7 @@ async function fetchAndProcessLectures(): Promise<Lecture[]> {
     });
   }
 
-  return lectures;
+  return { lectures, zoomLinks };
 }
 
 export async function GET() {
@@ -89,29 +92,35 @@ export async function GET() {
   if (isDevelopment) {
     const mockResponse = await fetch("http://localhost:3000/mocks/data.json");
     const mockData: Lecture[] = await mockResponse.json();
-    return NextResponse.json(mockData, {
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=0, must-revalidate",
+    return NextResponse.json(
+      { lectures: mockData, zoomLinks: {} },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=0, must-revalidate",
+        },
       },
-    });
+    );
   }
 
   if (cachedData && now - lastUpdated < CACHE_DURATION) {
-    return new NextResponse(JSON.stringify(cachedData), {
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+    return new NextResponse(
+      JSON.stringify({ lectures: cachedData, zoomLinks: {} }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        },
       },
-    });
+    );
   }
 
   try {
-    const freshData = await fetchAndProcessLectures();
-    cachedData = freshData;
+    const { lectures, zoomLinks } = await fetchAndProcessLectures();
+    cachedData = lectures;
     lastUpdated = now;
 
-    return new NextResponse(JSON.stringify(freshData), {
+    return new NextResponse(JSON.stringify({ lectures, zoomLinks }), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
@@ -119,12 +128,15 @@ export async function GET() {
     });
   } catch {
     if (cachedData) {
-      return new NextResponse(JSON.stringify(cachedData), {
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      return new NextResponse(
+        JSON.stringify({ lectures: cachedData, zoomLinks: {} }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+          },
         },
-      });
+      );
     }
 
     return new NextResponse(

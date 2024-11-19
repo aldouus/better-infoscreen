@@ -40,7 +40,7 @@ export const LectureDialog = ({
 
   const Content = (
     <>
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex gap-1 items-start">
           <Badge className="bg-neutral-800">
             {lecture.classType || "Undefined"}

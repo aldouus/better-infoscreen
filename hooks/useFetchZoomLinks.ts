@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Lecture } from "@/types/lecture";
 
-export const useFetchLectures = () => {
-  return useQuery<Lecture[]>({
-    queryKey: ["lectures"],
+export const useFetchZoomLinks = () => {
+  return useQuery({
+    queryKey: ["zoomLinks"],
     queryFn: async () => {
       const res = await fetch("/api/lectures");
       if (!res.ok) {
-        throw new Error("Failed to fetch lectures");
+        throw new Error("Failed to fetch Zoom links");
       }
       const data = await res.json();
-      return data.lectures;
+      return data.zoomLinks;
     },
     staleTime: 1000 * 60 * 5,
   });
