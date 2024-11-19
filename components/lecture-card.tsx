@@ -9,10 +9,13 @@ import { useUrlState } from "@/hooks/useUrlState";
 
 export function LectureCard({ lecture }: { lecture: Lecture }) {
   const { setUrlState, getUrlState } = useUrlState();
-  const isOpen = getUrlState("dialog") === lecture.className;
+  const dialogParam = getUrlState("dialog");
+  const isOpen = dialogParam === lecture.className;
 
   const handleOpenChange = (open: boolean) => {
-    setUrlState({ dialog: open ? lecture.className : null });
+    if (open !== isOpen) {
+      setUrlState({ dialog: open ? lecture.className : null });
+    }
   };
 
   return (

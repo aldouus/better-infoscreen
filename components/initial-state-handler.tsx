@@ -19,17 +19,20 @@ export function InitialStateHandler() {
 
     if (dialogParam) {
       const lecture = lectures.find(l => l.className === dialogParam);
-      if (lecture) {
-        setUrlState({ dialog: lecture.className });
+      if (!lecture) {
+        setUrlState({ dialog: null });
       }
     }
 
-    if (sheetParam) {
-      setUrlState({ sheet: sheetParam });
+    if (sheetParam && sheetParam !== "zoom") {
+      setUrlState({ sheet: null });
     }
 
     if (filterParam) {
-      setUrlState({ filter: filterParam });
+      const validFilter = lectures.some(l => l.imgSrc === filterParam);
+      if (!validFilter) {
+        setUrlState({ filter: null });
+      }
     }
   }, [lectures, searchParams, setUrlState]);
 
