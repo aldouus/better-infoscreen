@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { useFetchLectures } from "@/hooks/useFetchLectures";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SkeletonCard } from "@/components/skeleton-card";
 import { LectureCard } from "@/components/lecture-card";
 import { FilterButtons } from "@/components/filter-buttons";
 import { Separator } from "@/components/ui/separator";
 import { motion } from "motion/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function LectureList() {
   const { data: lectures, isLoading, isError } = useFetchLectures();
@@ -19,10 +20,20 @@ export function LectureList() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3">
-        {Array.from({ length: 8 }).map((_, index) => (
-          <Skeleton key={index} className="h-32 w-full rounded-2xl" />
-        ))}
+      <div className="flex-1">
+        <div className="flex gap-2 mb-5">
+          <Skeleton className="min-h-10 w-16 rounded-full bg-neutral-800" />
+        </div>
+        <Separator className="bg-neutral-800 mb-6 mt-3" />
+        <div
+          aria-busy="true"
+          aria-live="polite"
+          className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4"
+        >
+          {Array.from({ length: 8 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))}
+        </div>
       </div>
     );
   }
@@ -44,6 +55,7 @@ export function LectureList() {
       />
       <Separator className="bg-neutral-800 mb-6 mt-3" />
       <motion.div
+        layout
         className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 w-full"
         initial="hidden"
         animate="visible"
