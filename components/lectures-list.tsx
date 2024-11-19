@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import { useFetchLectures } from "@/hooks/useFetchLectures";
@@ -80,3 +79,4 @@ export function LectureList() {
       </motion.div>
     </div>
   );
+}
