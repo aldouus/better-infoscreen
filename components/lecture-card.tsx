@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Badge } from "./ui/badge";
 import Image from "next/image";
@@ -6,23 +5,32 @@ import { Clock } from "lucide-react";
 import { LectureDialog } from "@/components/lecture-dialog";
 import type { Lecture } from "@/types/lecture";
 import { handleKeyDown } from "@/utils/handleKeyDown";
+import { useUrlState } from "@/hooks/useUrlState";
 
 export function LectureCard({ lecture }: { lecture: Lecture }) {
-  const [open, setOpen] = useState(false);
+  const { setUrlState, getUrlState } = useUrlState();
+  const dialogParam = getUrlState("dialog");
+  const isOpen = dialogParam === lecture.className;
+
+  const handleOpenChange = (open: boolean) => {
+    if (open !== isOpen) {
+      setUrlState({ dialog: open ? lecture.className : null });
+    }
+  };
 
   return (
     <>
       <Card
         tabIndex={0}
-        onClick={() => setOpen(true)}
+        onClick={() => handleOpenChange(true)}
         onKeyDown={(e) =>
           handleKeyDown({
             event: e,
-            onOpen: () => setOpen(true),
+            onOpen: () => handleOpenChange(true),
           })
         }
         role="button"
-        aria-pressed={open}
+        aria-pressed={isOpen}
         className="bg-neutral-900 border border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset"
       >
         <CardHeader className="flex flex-row items-start gap-3 p-3">
@@ -66,8 +74,8 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
       </Card>
       <LectureDialog
         lecture={lecture}
-        open={open}
-        onClose={() => setOpen(false)}
+        open={isOpen}
+        onClose={() => handleOpenChange(false)}
       />
     </>
   );
