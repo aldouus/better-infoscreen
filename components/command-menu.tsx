@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { LectureDialog } from "@/components/lecture-dialog";
+import { useUrlState } from "@/hooks/useUrlState";
 import type { Lecture } from "@/types/lecture";
 
 type CommandMenuProps = {
@@ -18,8 +18,8 @@ type CommandMenuProps = {
 };
 
 export function CommandMenu({ lectures }: CommandMenuProps) {
-  const [openLecture, setOpenLecture] = useState<Lecture | null>(null);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const { setUrlState } = useUrlState();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -32,37 +32,29 @@ export function CommandMenu({ lectures }: CommandMenuProps) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  return (
-    <>
-      <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen}>
-        <Command>
-          <CommandInput placeholder="Search for lectures..." />
-          <CommandList>
-            <CommandEmpty>No lectures found.</CommandEmpty>
-            <CommandGroup heading="Lectures">
-              {lectures.map((lecture, index) => (
-                <CommandItem
-                  key={index}
-                  onSelect={() => {
-                    setOpenLecture(lecture);
-                    setIsCommandOpen(false);
-                  }}
-                >
-                  {lecture.className}
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </CommandDialog>
+  const handleSelectLecture = (lecture: Lecture) => {
+    setUrlState({ dialog: lecture.className });
+    setIsCommandOpen(false);
+  };
 
-      {openLecture && (
-        <LectureDialog
-          lecture={openLecture}
-          open={!!openLecture}
-          onClose={() => setOpenLecture(null)}
-        />
-      )}
-    </>
+  return (
+    <CommandDialog open={isCommandOpen} onOpenChange={setIsCommandOpen}>
+      <Command>
+        <CommandInput placeholder="Search for lectures..." />
+        <CommandList>
+          <CommandEmpty>No lectures found.</CommandEmpty>
+          <CommandGroup heading="Lectures">
+            {lectures.map((lecture, index) => (
+              <CommandItem
+                key={index}
+                onSelect={() => handleSelectLecture(lecture)}
+              >
+                {lecture.className}
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </CommandDialog>
   );
 }

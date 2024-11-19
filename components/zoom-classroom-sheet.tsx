@@ -17,9 +17,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
+import { useUrlState } from "@/hooks/useUrlState";
 
 export const ZoomClassroomSheet = () => {
   const { data: zoomLinks, isLoading, isError } = useFetchZoomLinks();
+  const { setUrlState, getUrlState } = useUrlState();
+  const isOpen = getUrlState("sheet") === "zoom";
+
+  const handleOpenChange = (open: boolean) => {
+    setUrlState({ sheet: open ? "zoom" : null });
+  };
 
   if (isLoading) {
     return <p>Loading Zoom Classrooms...</p>;
@@ -31,7 +38,7 @@ export const ZoomClassroomSheet = () => {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <Sheet>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger className="focus-visible:outline-orange-600 outline-none rounded-lg">
           <p className="sr-only">Show Zoom Classrooms</p>
           <Tooltip>
