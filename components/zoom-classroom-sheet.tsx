@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/sheet";
 import { PanelRightOpen } from "lucide-react";
 import Link from "next/link";
-import { zoomLinks } from "@/mocks/links";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
