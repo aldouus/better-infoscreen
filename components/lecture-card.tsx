@@ -6,6 +6,7 @@ import Image from "next/image";
 import { LectureDialog } from "@/components/lecture-dialog";
 import type { Lecture } from "@/types/lecture";
 import { useUrlState } from "@/hooks/useUrlState";
+import { handleKeyDown } from "@/utils/handleKeyDown";
 
 export function LectureCard({ lecture }: { lecture: Lecture }) {
   const { setUrlState, getUrlState } = useUrlState();
@@ -23,6 +24,9 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
       <Card
         tabIndex={0}
         onClick={() => handleOpenChange(true)}
+        onKeyDown={(e) =>
+          handleKeyDown({ event: e, onOpen: () => handleOpenChange(true) })
+        }
         role="button"
         aria-pressed={isOpen}
         data-lecture={lecture.className}
