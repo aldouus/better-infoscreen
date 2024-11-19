@@ -3,6 +3,14 @@ import { JSDOM } from "jsdom";
 import type { Lecture } from "@/types/lecture";
 
 export async function GET() {
+  const isDevelopment = false; // very sophisticated, I know
+
+  if (isDevelopment) {
+    const mockResponse = await fetch("http:localhost:3000/mocks/data.json");
+    const mockData: Lecture[] = await mockResponse.json();
+    return NextResponse.json(mockData);
+  }
+
   const response = await fetch("https://infoscreen.sae.ch/");
   const html = await response.text();
 

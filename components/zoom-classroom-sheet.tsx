@@ -5,7 +5,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { PanelRightOpen, ExternalLink } from "lucide-react";
+import { PanelRightOpen } from "lucide-react";
 import Link from "next/link";
 import { zoomLinks } from "@/mocks/links";
 import { Separator } from "@/components/ui/separator";
@@ -15,12 +15,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Card } from "@/components/ui/card";
 
 export const ZoomClassroomSheet = () => {
   return (
     <TooltipProvider delayDuration={0}>
       <Sheet>
-        <SheetTrigger>
+        <SheetTrigger className="focus-visible:outline-orange-600 outline-none rounded-lg">
+          <p className="sr-only">Show Zoom Classrooms</p>
           <Tooltip>
             <TooltipTrigger asChild>
               <PanelRightOpen className="text-neutral-500 hover:text-neutral-300 transition-colors" />
@@ -35,17 +37,18 @@ export const ZoomClassroomSheet = () => {
             <SheetTitle className="text-white">Zoom Classrooms</SheetTitle>
           </SheetHeader>
           <Separator className="my-3 bg-neutral-800" />
-          <div className="flex flex-col gap-2">
+          <div className="grid grid-cols-2 gap-4">
             {zoomLinks.map((link) => (
               <Tooltip key={link.id}>
-                <TooltipTrigger>
+                <TooltipTrigger asChild>
                   <Link
                     href={link.link}
-                    className="flex items-center gap-3 hover:underline hover:text-orange-500 transition-colors"
                     target="_blank"
+                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
                   >
-                    {link.title}
-                    <ExternalLink size={16} />
+                    <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600 ">
+                      {link.title}
+                    </Card>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="left" className="bg-neutral-800 mr-1">

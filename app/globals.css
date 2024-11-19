@@ -18,6 +18,10 @@ body {
     sans-serif;
 }
 
+*::selection {
+  @apply bg-neutral-300 text-neutral-800;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

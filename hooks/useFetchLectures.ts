@@ -10,7 +10,6 @@ export const useFetchLectures = () => {
         throw new Error("Failed to fetch lectures");
       }
       const data = await res.json();
-      console.log("Lectures Data in Hook:", JSON.stringify(data, null, 2));
       return data;
     },
     staleTime: 1000 * 60 * 5,
