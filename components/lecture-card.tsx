@@ -1,10 +1,10 @@
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
-import { Badge } from "./ui/badge";
-import Image from "next/image";
+"use client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
+import Image from "next/image";
 import { LectureDialog } from "@/components/lecture-dialog";
 import type { Lecture } from "@/types/lecture";
-import { handleKeyDown } from "@/utils/handleKeyDown";
 import { useUrlState } from "@/hooks/useUrlState";
 
 export function LectureCard({ lecture }: { lecture: Lecture }) {
@@ -23,14 +23,9 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
       <Card
         tabIndex={0}
         onClick={() => handleOpenChange(true)}
-        onKeyDown={(e) =>
-          handleKeyDown({
-            event: e,
-            onOpen: () => handleOpenChange(true),
-          })
-        }
         role="button"
         aria-pressed={isOpen}
+        data-lecture={lecture.className}
         className="bg-neutral-900 border border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset"
       >
         <CardHeader className="flex flex-row items-start gap-3 p-3">

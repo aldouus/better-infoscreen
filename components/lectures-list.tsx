@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import { useFetchLectures } from "@/hooks/useFetchLectures";
 import { SkeletonCard } from "@/components/skeleton-card";
 import { LectureCard } from "@/components/lecture-card";
@@ -7,10 +6,16 @@ import { FilterButtons } from "@/components/filter-buttons";
 import { Separator } from "@/components/ui/separator";
 import { motion } from "motion/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useUrlState } from "@/hooks/useUrlState";
 
 export function LectureList() {
   const { data: lectures, isLoading, isError } = useFetchLectures();
-  const [selectedFilterImgSrc, setSelectedFilterImgSrc] = useState("");
+  const { setUrlState, getUrlState } = useUrlState();
+  const selectedFilterImgSrc = getUrlState("filter") || "";
+
+  const setSelectedFilterImgSrc = (value: string) => {
+    setUrlState({ filter: value || null });
+  };
 
   const filteredLectures = lectures?.filter(
     (lecture) =>

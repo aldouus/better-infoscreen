@@ -8,8 +8,6 @@ import {
 } from "@/components/ui/sheet";
 import { PanelRightOpen } from "lucide-react";
 import Link from "next/link";
-import { useFetchZoomLinks } from "@/hooks/useFetchZoomLinks";
-import { useUrlState } from "@/hooks/useUrlState";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -18,6 +16,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
+import { useUrlState } from "@/hooks/useUrlState";
+import { useFetchZoomLinks } from "@/hooks/useFetchZoomLinks";
 
 export const ZoomClassroomSheet = () => {
   const { data: zoomLinks, isLoading, isError } = useFetchZoomLinks();
