@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Clock } from "lucide-react";
 import { LectureDialog } from "@/components/lecture-dialog";
 import type { Lecture } from "@/types/lecture";
+import { handleKeyDown } from "@/utils/handleKeyDown";
 
 export function LectureCard({ lecture }: { lecture: Lecture }) {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,12 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
       <Card
         tabIndex={0}
         onClick={() => setOpen(true)}
+        onKeyDown={(e) =>
+          handleKeyDown({
+            event: e,
+            onOpen: () => setOpen(true),
+          })
+        }
         role="button"
         aria-pressed={open}
         className="bg-neutral-900 border border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset"
@@ -43,9 +50,6 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
                 ? "Unknown"
                 : lecture.instructor || "Unknown"}
             </p>
-          </div>
-          <div>
-            <p className="text-white">{lecture.class || "Unknown"}</p>
           </div>
           <div className="flex gap-1">
             <Badge className="bg-neutral-800">
