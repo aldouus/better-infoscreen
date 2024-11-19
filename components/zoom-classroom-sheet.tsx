@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Card } from "@/components/ui/card";
 import { useUrlState } from "@/hooks/useUrlState";
+import { useFetchZoomLinks } from "@/hooks/useFetchZoomLinks"
 
 export const ZoomClassroomSheet = () => {
   const { data: zoomLinks, isLoading, isError } = useFetchZoomLinks();
