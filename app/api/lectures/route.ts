@@ -117,7 +117,7 @@ export async function GET() {
         "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
       },
     });
-  } catch (error) {
+  } catch {
     if (cachedData) {
       return new NextResponse(JSON.stringify(cachedData), {
         headers: {
