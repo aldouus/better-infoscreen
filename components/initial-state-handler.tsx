@@ -7,11 +7,11 @@ import { useUrlState } from "@/hooks/useUrlState";
 
 export function InitialStateHandler() {
   const searchParams = useSearchParams();
-  const { data: lectures } = useFetchLectures();
+  const { data: lectures, isLoading } = useFetchLectures();
   const { setUrlState } = useUrlState();
 
   useEffect(() => {
-    if (!lectures) return;
+    if (isLoading || !lectures) return;
 
     const dialogParam = searchParams.get("dialog");
     const sheetParam = searchParams.get("sheet");
@@ -34,7 +34,7 @@ export function InitialStateHandler() {
         setUrlState({ filter: null });
       }
     }
-  }, [lectures, searchParams, setUrlState]);
+  }, [lectures, isLoading, searchParams, setUrlState]);
 
   return null;
 }
