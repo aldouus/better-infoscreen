@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sheet";
 import { PanelRightOpen } from "lucide-react";
 import Link from "next/link";
-import { useFetchZoomLinks } from "@/hooks/useFetchZoomLinks";
+import { zoomLinks } from "@/mocks/links";
 import { Separator } from "@/components/ui/separator";
 import {
   Tooltip,
@@ -19,16 +19,6 @@ import {
 import { Card } from "@/components/ui/card";
 
 export const ZoomClassroomSheet = () => {
-  const { data: zoomLinks, isLoading, isError } = useFetchZoomLinks();
-
-  if (isLoading) {
-    return <p>Loading Zoom Classrooms...</p>;
-  }
-
-  if (isError || !zoomLinks) {
-    return <p>Failed to load Zoom Classrooms.</p>;
-  }
-
   return (
     <TooltipProvider delayDuration={0}>
       <Sheet>
@@ -49,21 +39,21 @@ export const ZoomClassroomSheet = () => {
           </SheetHeader>
           <Separator className="my-3 bg-neutral-800" />
           <div className="grid grid-cols-2 gap-4">
-            {Object.entries(zoomLinks).map(([title, link]) => (
-              <Tooltip key={title}>
+            {zoomLinks.map((link) => (
+              <Tooltip key={link.id}>
                 <TooltipTrigger asChild>
                   <Link
-                    href={String(link)}
+                    href={link.link}
                     target="_blank"
                     className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
                   >
                     <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600 ">
-                      {title}
+                      {link.title}
                     </Card>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="left" className="bg-neutral-800 mr-1">
-                  <p className="text-white">Join Zoom {title}</p>
+                  <p className="text-white">Join Zoom {link.title}</p>
                 </TooltipContent>
               </Tooltip>
             ))}
