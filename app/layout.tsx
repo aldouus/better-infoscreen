@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description: "SAE Zurich Infoscreen",
     type: "website",
     locale: "en_US",
-    url: "https://infoscreen.vercel.app",
+    url: "https://betterinfoscreen.ch",
     siteName: "Infoscreen",
     images: [
       {
