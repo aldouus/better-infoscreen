@@ -24,6 +24,7 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
               src={lecture.imgSrc}
               alt={lecture.className || "Untitled"}
               fill
+              sizes="128px"
               className="rounded-full object-cover"
             />
           </div>

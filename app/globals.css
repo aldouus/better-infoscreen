@@ -4,6 +4,7 @@
 
 body {
   font-family:
+    "Helvetica Neue",
     "Geist Sans",
     system-ui,
     -apple-system,
@@ -14,8 +15,18 @@ body {
     Ubuntu,
     Cantarell,
     "Open Sans",
-    "Helvetica Neue",
     sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+a {
+  font-family: var(--font-code-bold);
 }
 
 *::selection {

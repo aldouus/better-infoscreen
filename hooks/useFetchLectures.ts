@@ -1,5 +1,5 @@
-import type { Lecture } from "@/types/lecture";
 import { useQuery } from "@tanstack/react-query";
+import type { Lecture } from "@/types/lecture";
 
 export const useFetchLectures = () => {
   return useQuery<Lecture[]>({

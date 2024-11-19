@@ -1,5 +1,5 @@
-"use client";
 
+"use client";
 import React, { useState } from "react";
 import { useFetchLectures } from "@/hooks/useFetchLectures";
 import { SkeletonCard } from "@/components/skeleton-card";
@@ -22,13 +22,13 @@ export function LectureList() {
     return (
       <div className="flex-1">
         <div className="flex gap-2 mb-5">
-          <Skeleton className="min-h-10 w-16 rounded-full bg-neutral-800" />
+          <Skeleton className="min-h-10 w-12 rounded-full bg-neutral-800" />
         </div>
         <Separator className="bg-neutral-800 mb-6 mt-3" />
         <div
           aria-busy="true"
           aria-live="polite"
-          className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4"
+          className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 h-full"
         >
           {Array.from({ length: 8 }).map((_, index) => (
             <SkeletonCard key={index} />
@@ -55,7 +55,6 @@ export function LectureList() {
       />
       <Separator className="bg-neutral-800 mb-6 mt-3" />
       <motion.div
-        layout
         className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 w-full"
         initial="hidden"
         animate="visible"
@@ -81,4 +80,3 @@ export function LectureList() {
       </motion.div>
     </div>
   );
-}

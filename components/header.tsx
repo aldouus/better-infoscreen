@@ -11,7 +11,7 @@ export const Header = () => {
           alt="SAE logo"
           width={0}
           height={0}
-          priority
+          priority={true}
           sizes="512px"
           className="w-auto h-auto max-h-[64px] min-h-[64px]"
         />

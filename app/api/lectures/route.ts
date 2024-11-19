@@ -2,15 +2,12 @@ import { NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 import type { Lecture } from "@/types/lecture";
 
-export async function GET() {
-  const isDevelopment = false; // very sophisticated, I know
+let cachedData: Lecture[] | null = null;
+let lastUpdated = 0;
+const CACHE_DURATION = 1000 * 60 * 5;
+const isDevelopment = false;
 
-  if (isDevelopment) {
-    const mockResponse = await fetch("http:localhost:3000/mocks/data.json");
-    const mockData: Lecture[] = await mockResponse.json();
-    return NextResponse.json(mockData);
-  }
-
+async function fetchAndProcessLectures(): Promise<Lecture[]> {
   const response = await fetch("https://infoscreen.sae.ch/");
   const html = await response.text();
 
@@ -83,18 +80,56 @@ export async function GET() {
     });
   }
 
-  console.log(JSON.stringify(lectures, null, 2));
+  return lectures;
+}
 
-  return NextResponse.json(
-    lectures.map((lecture) => ({
-      classroom: lecture.classroom,
-      class: lecture.class,
-      time: lecture.time,
-      instructor: lecture.instructor,
-      className: lecture.className,
-      imgSrc: lecture.imgSrc,
-      classType: lecture.classType,
-      zoomLink: lecture.zoomLink,
-    })),
-  );
+export async function GET() {
+  const now = Date.now();
+
+  if (isDevelopment) {
+    const mockResponse = await fetch("http://localhost:3000/mocks/data.json");
+    const mockData: Lecture[] = await mockResponse.json();
+    return NextResponse.json(mockData, {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=0, must-revalidate",
+      },
+    });
+  }
+
+  if (cachedData && now - lastUpdated < CACHE_DURATION) {
+    return new NextResponse(JSON.stringify(cachedData), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      },
+    });
+  }
+
+  try {
+    const freshData = await fetchAndProcessLectures();
+    cachedData = freshData;
+    lastUpdated = now;
+
+    return new NextResponse(JSON.stringify(freshData), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+      },
+    });
+  } catch (error) {
+    if (cachedData) {
+      return new NextResponse(JSON.stringify(cachedData), {
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
+        },
+      });
+    }
+
+    return new NextResponse(
+      JSON.stringify({ message: "Failed to fetch or process data." }),
+      { status: 500 },
+    );
+  }
 }
