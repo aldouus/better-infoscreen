@@ -44,6 +44,9 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
                 : lecture.instructor || "Unknown"}
             </p>
           </div>
+          <div>
+            <p className="text-white">{lecture.class || "Unknown"}</p>
+          </div>
           <div className="flex gap-1">
             <Badge className="bg-neutral-800">
               {lecture.classType || "Undefined"}
