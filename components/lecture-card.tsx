@@ -30,7 +30,7 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
         role="button"
         aria-pressed={isOpen}
         data-lecture={lecture.className}
-        className="bg-neutral-900 border h-full border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset flex flex-col"
+        className="bg-neutral-900 border h-full border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] max-w-[500px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset flex flex-col"
       >
         <CardHeader className="flex flex-row items-start gap-3 p-3">
           <div className="relative w-8 h-8">
@@ -51,10 +51,14 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
           <div className="flex flex-col gap-3">
             <div>
               <CardTitle className="text-white">
-                {lecture.className || ""}
+                {lecture.className ||
+                  lecture.class?.split(" ")[0] ||
+                  "Zimmerbuchung"}
               </CardTitle>
               <p className="text-sm text-neutral-400">
-                {lecture.instructor === "?" ? "" : lecture.instructor || ""}
+                {lecture.instructor === "?"
+                  ? "No Instructor"
+                  : lecture.instructor || ""}
               </p>
             </div>
             <div>

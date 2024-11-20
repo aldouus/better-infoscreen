@@ -56,7 +56,7 @@ export function LectureList() {
         <div
           aria-busy="true"
           aria-live="polite"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 h-full"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 h-full max-w-[2560px] w-full"
         >
           {Array.from({ length: 8 }).map((_, index) => (
             <SkeletonCard key={index} />
@@ -83,7 +83,7 @@ export function LectureList() {
       />
       <Separator className="bg-neutral-800 mb-6 mt-3" />
       <motion.div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full max-w-[2560px]"
         initial="hidden"
         animate="visible"
         variants={{
