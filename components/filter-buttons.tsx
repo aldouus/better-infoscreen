@@ -35,7 +35,7 @@ export const FilterButtons = ({
 
   return (
     <motion.div
-      className="flex flex-row items-center gap-2 pb-3"
+      className="flex flex-row items-center overflow-x-auto gap-2 pb-3"
       variants={container}
       initial="hidden"
       animate="show"
