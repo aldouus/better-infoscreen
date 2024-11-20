@@ -119,7 +119,9 @@ export const LectureDialog = ({
                 "Zimmerbuchung"}
             </DialogTitle>
             <DialogDescription className="text-neutral-400">
-              {lecture.instructor === "?" ? "" : lecture.instructor || ""}
+              {lecture.instructor === "?"
+                ? "No Instructor"
+                : lecture.instructor || ""}
             </DialogDescription>
           </DialogHeader>
           {Content}
