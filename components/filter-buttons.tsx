@@ -58,6 +58,10 @@ export const FilterButtons = ({
           ? nameMatch[1].charAt(0).toUpperCase() + nameMatch[1].slice(1)
           : "Unknown";
 
+        if (curriculumName === "Undefined") {
+          return null;
+        }
+
         return (
           <motion.div key={imgSrc} variants={item}>
             <Button

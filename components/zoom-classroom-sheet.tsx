@@ -28,15 +28,9 @@ export const ZoomClassroomSheet = () => {
     setUrlState({ sheet: open ? "zoom" : null });
   };
 
-  if (isLoading) {
-    return <p>Loading Zoom Classrooms...</p>;
-  }
-
-  if (isError || !zoomLinks) {
-    return <p>Failed to load Zoom Classrooms.</p>;
-  }
-
-  const validZoomLinks = Object.entries(zoomLinks).filter(([link]) => link);
+  const validZoomLinks = zoomLinks
+    ? Object.entries(zoomLinks).filter(([link]) => link)
+    : [];
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -57,26 +51,32 @@ export const ZoomClassroomSheet = () => {
             <SheetTitle className="text-white">Zoom Classrooms</SheetTitle>
           </SheetHeader>
           <Separator className="my-3 bg-neutral-800" />
-          <div className="grid grid-cols-2 gap-4">
-            {validZoomLinks.map(([title, link]) => (
-              <Tooltip key={title}>
-                <TooltipTrigger asChild>
-                  <Link
-                    href={link}
-                    target="_blank"
-                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
-                  >
-                    <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600">
-                      {title}
-                    </Card>
-                  </Link>
-                </TooltipTrigger>
-                <TooltipContent side="left" className="bg-neutral-800 mr-1">
-                  <p className="text-white">Join Zoom {title}</p>
-                </TooltipContent>
-              </Tooltip>
-            ))}
-          </div>
+          {isLoading ? (
+            <p>Loading Zoom Classrooms...</p>
+          ) : isError || !zoomLinks ? (
+            <p>Failed to load Zoom Classrooms.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              {validZoomLinks.map(([title, link]) => (
+                <Tooltip key={title}>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={link}
+                      target="_blank"
+                      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 transition-colors rounded-xl"
+                    >
+                      <Card className="h-24 flex items-center justify-center text-center p-4 bg-neutral-900 border-neutral-800 text-white hover:border-orange-600">
+                        {title}
+                      </Card>
+                    </Link>
+                  </TooltipTrigger>
+                  <TooltipContent side="left" className="bg-neutral-800 mr-1">
+                    <p className="text-white">Join Zoom {title}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          )}
         </SheetContent>
       </Sheet>
     </TooltipProvider>

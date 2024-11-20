@@ -7,19 +7,43 @@ import { Separator } from "@/components/ui/separator";
 import { motion } from "motion/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUrlState } from "@/hooks/useUrlState";
+import { useEffect, useState, useCallback } from "react";
 
 export function LectureList() {
   const { data: lectures, isLoading, isError } = useFetchLectures();
   const { setUrlState, getUrlState } = useUrlState();
-  const selectedFilterImgSrc = getUrlState("filter") || "";
+  const [selectedFilter, setSelectedFilterState] = useState(
+    getUrlState("filter") || "",
+  );
 
-  const setSelectedFilterImgSrc = (value: string) => {
-    setUrlState({ filter: value || null });
-  };
+  const setSelectedFilter = useCallback(
+    (value: string) => {
+      const iconName = value
+        ? value.split("/").pop()?.replace("icon_", "").replace(".png", "")
+        : null;
+      setUrlState({ filter: iconName || null });
+      setSelectedFilterState(iconName || "");
+
+      const newUrl = new URL(window.location.href);
+      if (iconName) {
+        newUrl.searchParams.set("filter", iconName);
+      } else {
+        newUrl.searchParams.delete("filter");
+      }
+      window.history.pushState({}, "", newUrl);
+    },
+    [setUrlState],
+  );
+
+  useEffect(() => {
+    const urlFilter = new URLSearchParams(window.location.search).get("filter");
+    if (urlFilter) {
+      setSelectedFilter(urlFilter);
+    }
+  }, [setSelectedFilter]);
 
   const filteredLectures = lectures?.filter(
-    (lecture) =>
-      !selectedFilterImgSrc || lecture.imgSrc === selectedFilterImgSrc,
+    (lecture) => !selectedFilter || lecture.imgSrc.includes(selectedFilter),
   );
 
   if (isLoading) {
@@ -54,8 +78,8 @@ export function LectureList() {
     <div className="flex-1">
       <FilterButtons
         lectures={lectures || []}
-        selectedFilterImgSrc={selectedFilterImgSrc}
-        setSelectedFilterImgSrc={setSelectedFilterImgSrc}
+        selectedFilterImgSrc={selectedFilter}
+        setSelectedFilterImgSrc={setSelectedFilter}
       />
       <Separator className="bg-neutral-800 mb-6 mt-3" />
       <motion.div

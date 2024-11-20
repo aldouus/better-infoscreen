@@ -30,7 +30,7 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
         role="button"
         aria-pressed={isOpen}
         data-lecture={lecture.className}
-        className="bg-neutral-900 border border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset"
+        className="bg-neutral-900 border h-full border-neutral-800 cursor-pointer hover:bg-neutral-800 transition-colors min-w-[300px] w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-inset flex flex-col"
       >
         <CardHeader className="flex flex-row items-start gap-3 p-3">
           <div className="relative w-8 h-8">
@@ -47,27 +47,27 @@ export function LectureCard({ lecture }: { lecture: Lecture }) {
             {lecture.time}
           </p>
         </CardHeader>
-        <CardContent className="flex flex-col gap-3 p-3">
-          <div>
-            <CardTitle className="text-white">
-              {lecture.className || "Undefined"}
-            </CardTitle>
-            <p className="text-sm text-neutral-400">
-              {lecture.instructor === "?"
-                ? "Unknown"
-                : lecture.instructor || "Unknown"}
-            </p>
-          </div>
-          <div>
-            <p className="text-white">{lecture.class || "Unknown"}</p>
+        <CardContent className="flex flex-col gap-3 p-3 flex-1 flex-grow justify-between">
+          <div className="flex flex-col gap-3">
+            <div>
+              <CardTitle className="text-white">
+                {lecture.className || ""}
+              </CardTitle>
+              <p className="text-sm text-neutral-400">
+                {lecture.instructor === "?" ? "" : lecture.instructor || ""}
+              </p>
+            </div>
+            <div>
+              <p className="text-white">{lecture.class || ""}</p>
+            </div>
           </div>
           <div className="flex gap-1">
-            <Badge className="bg-neutral-800">
-              {lecture.classType || "Undefined"}
-            </Badge>
-            <Badge className="bg-neutral-800">
-              {lecture.classroom || "Undefined"}
-            </Badge>
+            {lecture.classType !== "Undefined" && (
+              <Badge className="bg-neutral-800">{lecture.classType}</Badge>
+            )}
+            {lecture.classroom !== "Undefined" && (
+              <Badge className="bg-neutral-800">{lecture.classroom}</Badge>
+            )}
           </div>
         </CardContent>
       </Card>

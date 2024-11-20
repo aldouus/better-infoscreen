@@ -42,16 +42,16 @@ export const LectureDialog = ({
     <>
       <div className="space-y-2">
         <div className="flex gap-1 items-start">
-          <Badge className="bg-neutral-800">
-            {lecture.classType || "Undefined"}
-          </Badge>
-          <Badge className="bg-neutral-800">
-            {lecture.classroom || "Undefined"}
-          </Badge>
+          {lecture.classType !== "Undefined" && (
+            <Badge className="bg-neutral-800">{lecture.classType}</Badge>
+          )}
+          {lecture.classroom !== "Undefined" && (
+            <Badge className="bg-neutral-800">{lecture.classroom}</Badge>
+          )}
         </div>
         <h3 className="text-sm text-neutral-400 pt-6">Class</h3>
         <Separator className="bg-neutral-800" />
-        <p className="pb-3">{lecture.class || "Unknown"}</p>
+        <p className="pb-3">{lecture.class || ""}</p>
       </div>
     </>
   );
@@ -76,7 +76,7 @@ export const LectureDialog = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Join Zoom {lecture.classroom || "Undefined"}
+                Join Zoom {lecture.classroom || ""}
               </a>
             </Button>
           )}
@@ -94,7 +94,7 @@ export const LectureDialog = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Join Zoom {lecture.classroom || "Undefined"}
+                Join Zoom {lecture.classroom || ""}
               </a>
             </Button>
           )}
@@ -113,11 +113,13 @@ export const LectureDialog = ({
       <Dialog open={open} onOpenChange={onClose}>
         <DialogContent className="bg-neutral-900 text-white border-neutral-800">
           <DialogHeader>
-            <DialogTitle>{lecture.className || "Undefined"}</DialogTitle>
+            <DialogTitle>
+              {lecture.className ||
+                lecture.class?.split(" ")[0] ||
+                "Zimmerbuchung"}
+            </DialogTitle>
             <DialogDescription className="text-neutral-400">
-              {lecture.instructor === "?"
-                ? "Unknown"
-                : lecture.instructor || "Unknown"}
+              {lecture.instructor === "?" ? "" : lecture.instructor || ""}
             </DialogDescription>
           </DialogHeader>
           {Content}
